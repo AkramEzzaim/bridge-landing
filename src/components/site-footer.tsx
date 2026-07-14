@@ -161,48 +161,55 @@ export function SiteFooter() {
       const wordmark = root.querySelector<HTMLElement>(`.${styles.wordmarkLogo}`);
       if (!card || !glow || !wordmark) return;
 
+      const syncTrigger = (
+        self: ScrollTrigger,
+        progress = self.progress,
+      ) => {
+        self.getTween()?.progress(1);
+        self.animation?.totalProgress(progress, true);
+      };
+
       const timeline = gsap.timeline({
         defaults: { ease: "none" },
         scrollTrigger: {
           trigger: root,
-          start: "top 94%",
-          end: "top 16%",
-          scrub: 1.35,
+          start: "clamp(top bottom)",
+          end: "clamp(top 50%)",
+          scrub: 0.65,
+          fastScrollEnd: true,
           invalidateOnRefresh: true,
+          onRefresh: self => syncTrigger(self),
+          onLeave: self => syncTrigger(self, 1),
+          onLeaveBack: self => syncTrigger(self, 0),
         },
       });
 
       timeline
         .fromTo(
-          card,
-          { autoAlpha: 0, y: 150, rotateX: 6, rotateZ: -1.2, scale: 0.96, transformOrigin: "50% 100%" },
-          { autoAlpha: 1, y: 0, rotateX: 0, rotateZ: 0, scale: 1, duration: 0.66 },
-          0,
-        )
-        .fromTo(
           glow,
-          { scale: 0.72, yPercent: 22, autoAlpha: 0.25 },
+          { scale: 0.72, yPercent: 22, autoAlpha: 0.35 },
           { scale: 1, yPercent: 0, autoAlpha: 1, duration: 1.1 },
           0,
         )
         .fromTo(
           `.${styles.topColumn}`,
-          { autoAlpha: 0, y: 70, rotateY: -8, rotateZ: -2 },
+          { autoAlpha: 0.35, y: 70, rotateY: -8, rotateZ: -2 },
           { autoAlpha: 1, y: 0, rotateY: 0, rotateZ: 0, stagger: 0.1, duration: 0.42 },
           0.18,
         )
         .fromTo(
           wordmark,
-          { autoAlpha: 0, y: 170, rotateX: 9, scale: 0.94, filter: "blur(12px)", transformOrigin: "50% 100%" },
+          { autoAlpha: 0.35, y: 90, rotateX: 9, scale: 0.94, filter: "blur(7px)", transformOrigin: "50% 100%" },
           { autoAlpha: 1, y: 0, rotateX: 0, scale: 1, filter: "blur(0px)", duration: 0.68 },
           0.5,
         )
         .fromTo(
           `.${styles.bottomItem}`,
-          { autoAlpha: 0, y: 34, rotateZ: -2 },
+          { autoAlpha: 0.35, y: 34, rotateZ: -2 },
           { autoAlpha: 1, y: 0, rotateZ: 0, stagger: 0.09, duration: 0.34 },
           0.78,
         );
+
     },
     { scope },
   );

@@ -51,26 +51,44 @@ export default function BlurText({
 
       const segments = element.querySelectorAll(".blur-text-segment");
       const defaultFrom = direction === "top"
-        ? { filter: "blur(12px)", opacity: 0, y: -72, rotateX: -18 }
-        : { filter: "blur(12px)", opacity: 0, y: 72, rotateX: 18 };
+        ? { filter: "blur(7px)", opacity: 0.35, y: -72, rotateX: -18 }
+        : { filter: "blur(7px)", opacity: 0.35, y: 72, rotateX: 18 };
       const defaultSteps = [
         { filter: "blur(5px)", opacity: 0.55, y: direction === "top" ? 9 : -9, rotateX: direction === "top" ? 4 : -4 },
         { filter: "blur(0px)", opacity: 1, y: 0, rotateX: 0 },
       ];
-      const from = animationFrom ?? defaultFrom;
+      const requestedFrom: AnimationSnapshot = animationFrom ?? defaultFrom;
+      const { autoAlpha: requestedAutoAlpha, ...requestedFromWithoutAutoAlpha } = requestedFrom;
+      const requestedOpacity = Number(requestedFrom.opacity ?? requestedAutoAlpha);
+      const from = {
+        ...requestedFromWithoutAutoAlpha,
+        opacity: Number.isFinite(requestedOpacity) ? Math.max(0.35, requestedOpacity) : 0.35,
+      };
       const steps = animationTo ?? defaultSteps;
       const middle = steps.length > 1 ? steps[0] : steps[steps.length - 1];
       const final = steps[steps.length - 1];
       const stagger = Math.max(0.035, delay / 1000);
       const duration = Math.max(0.2, stepDuration);
 
+      const syncTrigger = (
+        self: ScrollTrigger,
+        progress = self.progress,
+      ) => {
+        self.getTween()?.progress(1);
+        self.animation?.totalProgress(progress, true);
+      };
+
       const timeline = gsap.timeline({
         scrollTrigger: {
           trigger: element,
-          start: "top 94%",
-          end: "top 45%",
-          scrub: 1.35,
+          start: "clamp(top bottom)",
+          end: "clamp(top 60%)",
+          scrub: 0.55,
+          fastScrollEnd: true,
           invalidateOnRefresh: true,
+          onRefresh: self => syncTrigger(self),
+          onLeave: self => syncTrigger(self, 1),
+          onLeaveBack: self => syncTrigger(self, 0),
         },
       });
 

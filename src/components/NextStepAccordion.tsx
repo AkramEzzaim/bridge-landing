@@ -93,33 +93,42 @@ export default function NextStepAccordion() {
       const root = scope.current;
       if (!root || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+      const syncTrigger = (self: ScrollTrigger, progress = self.progress) => {
+        self.getTween()?.progress(1);
+        self.animation?.totalProgress(progress, true);
+      };
+
       const reveal = gsap.timeline({
         defaults: { ease: "none" },
         scrollTrigger: {
           trigger: root,
-          start: "top 92%",
-          end: "top 18%",
-          scrub: 1.25,
+          start: "clamp(top bottom)",
+          end: "clamp(top 52%)",
+          scrub: 0.65,
+          fastScrollEnd: true,
           invalidateOnRefresh: true,
+          onRefresh: (self) => syncTrigger(self),
+          onLeave: (self) => syncTrigger(self, 1),
+          onLeaveBack: (self) => syncTrigger(self, 0),
         },
       });
 
       reveal
         .fromTo(".next-step-kicker",
-          { autoAlpha: 0, x: -70, rotateZ: -3 },
-          { autoAlpha: 1, x: 0, rotateZ: 0, duration: 0.24 }, 0)
+          { opacity: 0.35, x: -70, rotateZ: -3 },
+          { opacity: 1, x: 0, rotateZ: 0, duration: 0.24 }, 0)
         .fromTo(".next-step-title-line",
-          { autoAlpha: 0, y: 120, rotateX: -20, rotateZ: 1.5, transformOrigin: "50% 100%" },
-          { autoAlpha: 1, y: 0, rotateX: 0, rotateZ: 0, stagger: 0.1, duration: 0.52 }, 0.08)
+          { opacity: 0.35, y: 56, rotateX: -20, rotateZ: 1.5, transformOrigin: "50% 100%" },
+          { opacity: 1, y: 0, rotateX: 0, rotateZ: 0, stagger: 0.1, duration: 0.52 }, 0.08)
         .fromTo(".next-step-accent",
-          { autoAlpha: 0.15, filter: "blur(10px)", scale: 0.92 },
-          { autoAlpha: 1, filter: "blur(0px)", scale: 1, stagger: 0.08, duration: 0.3 }, 0.28)
+          { filter: "blur(7px)", scale: 0.92 },
+          { filter: "blur(0px)", scale: 1, stagger: 0.08, duration: 0.3 }, 0.28)
         .fromTo(".next-step-intro",
-          { autoAlpha: 0, y: 54, rotateZ: -1.5 },
-          { autoAlpha: 1, y: 0, rotateZ: 0, duration: 0.34 }, 0.48)
+          { opacity: 0.35, y: 54, rotateZ: -1.5 },
+          { opacity: 1, y: 0, rotateZ: 0, duration: 0.34 }, 0.48)
         .fromTo(".next-step-card",
-          { autoAlpha: 0, y: 145, rotateX: 9, rotateZ: -2.5, scale: 0.94, transformOrigin: "50% 100%" },
-          { autoAlpha: 1, y: 0, rotateX: 0, rotateZ: 0, scale: 1, stagger: 0.08, duration: 0.48 }, 0.58);
+          { rotateX: 9, rotateZ: -2.5, scale: 0.94, transformOrigin: "50% 100%" },
+          { y: 0, rotateX: 0, rotateZ: 0, scale: 1, stagger: 0.08, duration: 0.48 }, 0.58);
     },
     { scope },
   );

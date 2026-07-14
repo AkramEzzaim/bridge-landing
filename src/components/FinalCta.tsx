@@ -34,14 +34,23 @@ export default function FinalCta() {
       const image = root.querySelector<HTMLElement>(".final-cta-media");
       if (!card || !image) return;
 
+      const syncTrigger = (self: ScrollTrigger, progress = self.progress) => {
+        self.getTween()?.progress(1);
+        self.animation?.totalProgress(progress, true);
+      };
+
       const reveal = gsap.timeline({
         defaults: { ease: "none" },
         scrollTrigger: {
           trigger: root,
-          start: "top 94%",
-          end: "top 18%",
-          scrub: 1.3,
+          start: "clamp(top bottom)",
+          end: "clamp(top 50%)",
+          scrub: 0.65,
+          fastScrollEnd: true,
           invalidateOnRefresh: true,
+          onRefresh: (self) => syncTrigger(self),
+          onLeave: (self) => syncTrigger(self, 1),
+          onLeaveBack: (self) => syncTrigger(self, 0),
         },
       });
 
@@ -49,8 +58,6 @@ export default function FinalCta() {
         .fromTo(
           card,
           {
-            autoAlpha: 0,
-            y: 150,
             rotateX: 8,
             rotateZ: -1.5,
             scale: 0.95,
@@ -58,7 +65,6 @@ export default function FinalCta() {
             transformOrigin: "50% 100%",
           },
           {
-            autoAlpha: 1,
             y: 0,
             rotateX: 0,
             rotateZ: 0,
@@ -77,14 +83,14 @@ export default function FinalCta() {
         .fromTo(
           ".final-cta-title-line",
           {
-            autoAlpha: 0,
-            y: 108,
+            opacity: 0.35,
+            y: 56,
             rotateX: -18,
-            filter: "blur(12px)",
+            filter: "blur(7px)",
             transformOrigin: "50% 100%",
           },
           {
-            autoAlpha: 1,
+            opacity: 1,
             y: 0,
             rotateX: 0,
             filter: "blur(0px)",
@@ -95,20 +101,20 @@ export default function FinalCta() {
         )
         .fromTo(
           ".final-cta-support",
-          { autoAlpha: 0, y: 52, rotateZ: -1.5, filter: "blur(8px)" },
-          { autoAlpha: 1, y: 0, rotateZ: 0, filter: "blur(0px)", duration: 0.36 },
+          { opacity: 0.35, y: 52, rotateZ: -1.5, filter: "blur(5px)" },
+          { opacity: 1, y: 0, rotateZ: 0, filter: "blur(0px)", duration: 0.36 },
           0.5,
         )
         .fromTo(
           ".final-cta-action",
-          { autoAlpha: 0, y: 52, rotateZ: -5, scale: 0.84 },
-          { autoAlpha: 1, y: 0, rotateZ: 0, scale: 1, stagger: 0.12, duration: 0.42 },
+          { opacity: 0.35, y: 52, rotateZ: -5, scale: 0.84 },
+          { opacity: 1, y: 0, rotateZ: 0, scale: 1, stagger: 0.12, duration: 0.42 },
           0.62,
         )
         .fromTo(
           ".final-cta-refund",
-          { autoAlpha: 0, y: 24 },
-          { autoAlpha: 1, y: 0, duration: 0.3 },
+          { opacity: 0.35, y: 24 },
+          { opacity: 1, y: 0, duration: 0.3 },
           0.84,
         );
     },
