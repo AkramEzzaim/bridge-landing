@@ -1,9 +1,16 @@
+import Image from "next/image";
 import LightRays from "@/components/LightRays";
 import StarParticles from "@/components/StarParticles";
 import SplitText from "@/components/SplitText";
 import SectionReveal from "@/components/SectionReveal";
 import BenefitsCarousel from "@/components/BenefitsCarousel";
 import SpotlightCard from "@/components/SpotlightCard";
+import BlurText from "@/components/BlurText";
+import InteractiveWhyCard from "@/components/InteractiveWhyCard";
+import ScrollStack, { ScrollStackItem } from "@/components/ScrollStack";
+import NextStepAccordion from "@/components/NextStepAccordion";
+import FinalCta from "@/components/FinalCta";
+import SiteFooter from "@/components/site-footer";
 
 const Chevron = () => (
   <svg aria-hidden="true" viewBox="0 0 16 16" width="16" height="16">
@@ -70,6 +77,7 @@ const FeatureIcon = ({ name }: { name: IconName }) => {
 
 export default function Home() {
   return (
+    <>
     <main className="page-shell">
       <section className="hero">
         <div className="hero-atmosphere" aria-hidden="true" />
@@ -89,6 +97,7 @@ export default function Home() {
           className="hero-light-rays"
         />
         <StarParticles />
+        <div className="hero-bottom-glow" aria-hidden="true" />
 
         <header className="navbar">
           <a className="brand" href="#" aria-label="Bridgeway home">
@@ -124,8 +133,8 @@ export default function Home() {
                 delay={38}
                 duration={1.05}
                 ease="power4.out"
-                from={{ opacity: 0, y: 68, rotateX: -72 }}
-                to={{ opacity: 1, y: 0, rotateX: 0 }}
+                from={{ opacity: 0, y: 68, rotateX: -72, filter: "blur(12px)" }}
+                to={{ opacity: 1, y: 0, rotateX: 0, filter: "blur(0px)" }}
                 rootMargin="0px"
               />
             </span>
@@ -137,8 +146,8 @@ export default function Home() {
                 delay={42}
                 duration={1.1}
                 ease="power4.out"
-                from={{ opacity: 0, y: 72, rotateX: -72 }}
-                to={{ opacity: 1, y: 0, rotateX: 0 }}
+                from={{ opacity: 0, y: 72, rotateX: -72, filter: "blur(12px)" }}
+                to={{ opacity: 1, y: 0, rotateX: 0, filter: "blur(0px)" }}
                 rootMargin="0px"
               />
             </span>
@@ -238,7 +247,7 @@ export default function Home() {
           </div>
 
           <div className="course-grid">
-            <article className="course-card">
+            <article className="course-card" id="kids">
               <div className="course-media-placeholder" role="img" aria-label="Kids English course video placeholder">
                 <span className="play-badge"><PlayIcon /></span>
               </div>
@@ -251,7 +260,7 @@ export default function Home() {
               </div>
             </article>
 
-            <article className="course-card">
+            <article className="course-card" id="teens">
               <div className="course-media-placeholder" role="img" aria-label="Teens English course video placeholder">
                 <span className="play-badge"><PlayIcon /></span>
               </div>
@@ -264,7 +273,7 @@ export default function Home() {
               </div>
             </article>
 
-            <article className="course-card">
+            <article className="course-card" id="adults">
               <div className="course-media-placeholder" role="img" aria-label="Adults English course video placeholder">
                 <span className="play-badge"><PlayIcon /></span>
               </div>
@@ -309,8 +318,253 @@ export default function Home() {
             </SpotlightCard>
           </div>
         </section>
+
+        <section className="closing-cta" id="get-started">
+          <div className="closing-cta-copy">
+            <BlurText
+              text="No guessing your level."
+              delay={85}
+              animateBy="words"
+              direction="top"
+              stepDuration={0.28}
+              threshold={0.25}
+              rootMargin="-40px"
+              className="cta-blur-line"
+              scrollDriven={false}
+            />
+            <BlurText
+              text="No choosing blindly."
+              delay={90}
+              animateBy="words"
+              direction="bottom"
+              stepDuration={0.3}
+              threshold={0.25}
+              rootMargin="-40px"
+              className="cta-blur-line cta-blur-line-strong"
+              scrollDriven={false}
+            />
+            <BlurText
+              text="No paying first and hoping it fits."
+              delay={70}
+              animateBy="words"
+              direction="top"
+              stepDuration={0.28}
+              threshold={0.25}
+              rootMargin="-40px"
+              className="cta-blur-line"
+              scrollDriven={false}
+            />
+          </div>
+
+          <div className="closing-cta-actions">
+            <a href="#courses" className="closing-cta-primary">Get Started <ArrowRight /></a>
+            <a href="#level" className="closing-cta-secondary">Test your level <ArrowRight /></a>
+          </div>
+        </section>
+
+        <section className="why-section" id="why-bridgeway">
+          <div className="why-heading">
+            <p>Why Bridgeway</p>
+            <h2>Built for people who<br />want <span>English taken<br />seriously</span></h2>
+          </div>
+
+          <div className="why-mosaic">
+            <InteractiveWhyCard className="why-card-one">
+              <div className="why-image-placeholder" role="img" aria-label="Qualified teacher image placeholder" />
+              <strong>01</strong>
+              <h3>Qualified teachers<br />working inside a real<br />method</h3>
+            </InteractiveWhyCard>
+
+            <InteractiveWhyCard className="why-card-two">
+              <strong>02</strong>
+              <h3>Small groups that make<br />learning more effective</h3>
+              <div className="why-image-placeholder" role="img" aria-label="Small group image placeholder" />
+            </InteractiveWhyCard>
+
+            <InteractiveWhyCard className="why-card-three">
+              <div className="why-image-placeholder" role="img" aria-label="CEFR progression image placeholder" />
+              <strong>03</strong>
+              <h3>Clear CEFR-based<br />progression from the<br />start</h3>
+            </InteractiveWhyCard>
+
+            <InteractiveWhyCard className="why-card-four">
+              <strong>04</strong>
+              <h3>A cleaner online experience<br />from course to platform</h3>
+              <div className="why-image-placeholder why-image-placeholder-tall" role="img" aria-label="Online learning platform image placeholder" />
+            </InteractiveWhyCard>
+
+            <div className="why-section-cta">
+              <p>Most online English options offer one useful piece.<br />Bridgeway brings the full system together.</p>
+              <div>
+                <a href="#courses" className="why-primary-action">Get Started <ArrowRight /></a>
+                <a href="#why-us" className="why-secondary-action">See why Bridgeway <ArrowRight /></a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="platform-stack-section" id="platform-experience" aria-label="The Bridgeway learning experience">
+          <ScrollStack
+            className="bridgeway-scroll-stack"
+            itemDistance={58}
+            itemScale={0.035}
+            itemStackDistance={26}
+            stackPosition="8%"
+            scaleEndPosition="3%"
+            baseScale={0.93}
+            rotationAmount={0.2}
+            blurAmount={0.25}
+            useWindowScroll
+          >
+            <ScrollStackItem itemClassName="platform-stack-card platform-video-card">
+              <div className="platform-video-placeholder" role="img" aria-label="Bridgeway learning platform video placeholder">
+                <span className="platform-video-control" aria-hidden="true">
+                  <PlayIcon />
+                </span>
+              </div>
+            </ScrollStackItem>
+
+            <ScrollStackItem itemClassName="platform-stack-card platform-quote-card">
+              <span className="platform-quote-mark platform-quote-mark-open" aria-hidden="true">“</span>
+              <div className="platform-quote-copy">
+                <p>
+                  Too many learners lose <strong>momentum</strong> between classes. Materials are hard to track,
+                  communication is scattered, and <strong>progress</strong> feels vague.
+                </p>
+                <p>
+                  <strong>Bridgeway</strong> brings the learning experience into one place, so students and
+                  <strong> parents</strong> can follow the course more clearly, stay aligned, and keep
+                  <strong> moving without</strong> confusion.
+                </p>
+              </div>
+              <span className="platform-quote-mark platform-quote-mark-close" aria-hidden="true">”</span>
+            </ScrollStackItem>
+          </ScrollStack>
+        </section>
+
+        <section className="speaking-club-shell" id="speaking-club">
+          <div className="speaking-club-section">
+            <p className="speaking-club-kicker">Speaking Club</p>
+
+            <h2 className="speaking-club-title">
+              <span className="speaking-club-title-line">More speaking,</span>
+              <span className="speaking-club-title-line speaking-club-title-indent">
+                <strong>Without</strong> the <em>chaos</em> of
+              </span>
+              <span className="speaking-club-title-line">random conversation groups.</span>
+            </h2>
+
+            <p className="speaking-club-description">
+              Live conversation sessions designed for real fluency. Small groups, qualified facilitation, focused speaking time every week.
+            </p>
+
+            <div className="speaking-club-media">
+              <Image
+                src="/speaking-club-neon.png"
+                alt="Four adult learners taking part in a live online speaking session"
+                width={1536}
+                height={1024}
+                sizes="(max-width: 640px) calc(100vw - 52px), calc(100vw - 112px)"
+              />
+            </div>
+          </div>
+        </section>
+
+        <section className="speaking-club-detail-shell" aria-labelledby="speaking-club-detail-copy">
+          <div className="speaking-club-detail">
+            <h2 className="speaking-club-detail-copy" id="speaking-club-detail-copy">
+              <strong>Speaking Club</strong> is designed as a serious complement to your main learning path. It gives
+              learners more <strong>speaking</strong> time, better <strong>level fit</strong>, and stronger continuity
+              than open drop-in conversation spaces.
+            </h2>
+
+            <figure
+              className="speaking-club-groups-media speaking-club-groups-primary"
+              tabIndex={0}
+              aria-label="Small speaking groups organized by age and level"
+            >
+              <Image
+                src="/speaking-club-groups.png"
+                alt="Two young adult English learners in a blue-lit studio"
+                width={1536}
+                height={1024}
+                sizes="(max-width: 640px) calc(100vw - 20px), calc(100vw - 32px)"
+              />
+              <figcaption className="speaking-club-groups-caption">
+                Small groups by age and level
+              </figcaption>
+            </figure>
+
+            <div className="speaking-club-feature-gallery">
+              <figure
+                className="speaking-club-groups-media speaking-club-feature-card speaking-club-feature-card-tall speaking-club-feature-card-light"
+                tabIndex={0}
+                aria-labelledby="speaking-live-sessions-caption"
+              >
+                <Image
+                  src="/speaking-club-live-sessions.png"
+                  alt="Blue watercolor portrait of an adult learner using a laptop"
+                  width={1122}
+                  height={1402}
+                  sizes="(max-width: 640px) calc(100vw - 36px), (max-width: 1600px) calc(50vw - 54px), 720px"
+                />
+                <figcaption className="speaking-club-groups-caption" id="speaking-live-sessions-caption">
+                  Regular live speaking sessions
+                </figcaption>
+              </figure>
+
+              <figure
+                className="speaking-club-groups-media speaking-club-feature-card speaking-club-feature-card-tall"
+                tabIndex={0}
+                aria-labelledby="speaking-consistency-caption"
+              >
+                <Image
+                  src="/speaking-club-consistency.png"
+                  alt="Three adult learners talking in a blue-lit studio"
+                  width={1122}
+                  height={1402}
+                  sizes="(max-width: 640px) calc(100vw - 36px), (max-width: 1600px) calc(50vw - 54px), 720px"
+                />
+                <figcaption className="speaking-club-groups-caption" id="speaking-consistency-caption">
+                  Better consistency than casual conversation spaces
+                </figcaption>
+              </figure>
+
+              <figure
+                className="speaking-club-groups-media speaking-club-feature-card speaking-club-feature-card-wide"
+                tabIndex={0}
+                aria-labelledby="speaking-support-caption"
+              >
+                <Image
+                  src="/speaking-club-ongoing-support.png"
+                  alt="Profile of an adult learner outlined by blue light"
+                  width={1586}
+                  height={992}
+                  sizes="(max-width: 640px) calc(100vw - 36px), (max-width: 1600px) calc(100vw - 96px), 1480px"
+                />
+                <figcaption className="speaking-club-groups-caption" id="speaking-support-caption">
+                  Ideal alongside a main course or as ongoing speaking support
+                </figcaption>
+              </figure>
+            </div>
+
+            <div className="speaking-club-detail-actions">
+              <a href="#courses" className="closing-cta-primary">
+                Get Started <ArrowRight />
+              </a>
+              <a href="#speaking-club" className="closing-cta-secondary">
+                Explore Speaking Club <ArrowRight />
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <NextStepAccordion />
+        <FinalCta />
         </SectionReveal>
       </section>
     </main>
+    <SiteFooter />
+    </>
   );
 }
